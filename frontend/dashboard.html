@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | HisabMate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="dashboard.js" defer></script>
+</head>
+<body>
+  <div class="app-layout">
+
+    <aside class="sidebar">
+      <a href="index.html" class="brand">
+        <span class="brand-icon">H</span>
+        <span>HisabMate<small>SMART DIGITAL KHATA</small></span>
+      </a>
+
+      <p class="nav-label">WORKSPACE</p>
+      <nav>
+        <a href="#overview" class="nav-link active" data-page="overview">▦ &nbsp; Overview</a>
+        <a href="#customers" class="nav-link" data-page="customers">♙ &nbsp; Customers</a>
+        <a href="#transactions" class="nav-link" data-page="transactions">⇄ &nbsp; Transactions</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="help-card">
+          <span>✳</span>
+          <strong>Your khata, simplified.</strong>
+          <p>Every entry. Every customer. One place.</p>
+        </div>
+        <a href="index.html" class="back-link">← Back to website</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">YOUR BUSINESS AT A GLANCE</p>
+          <h1 id="pageTitle">Good day, Shopkeeper.</h1>
+          <p class="subtext">Here's what's happening with your khata.</p>
+        </div>
+        <button class="primary-btn" id="addCustomerBtn">+ Add customer</button>
+      </header>
+
+      <section id="overview" class="page-section">
+        <div class="welcome-banner">
+          <div>
+            <span class="banner-label">YOUR DAILY KHATA</span>
+            <h2>Clear hisaab.<br><em>Peace of mind.</em></h2>
+            <p>Keep every customer balance organised, one entry at a time.</p>
+          </div>
+          <div class="banner-symbol">₹</div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span class="stat-icon">↗</span>
+            <p>Total udhaar</p>
+            <h2 id="totalUdhaar">₹0</h2>
+            <small>Credit entries recorded</small>
+          </article>
+          <article class="stat-card received">
+            <span class="stat-icon">✓</span>
+            <p>Payments received</p>
+            <h2 id="totalReceived">₹0</h2>
+            <small>Payments recorded</small>
+          </article>
+          <article class="stat-card pending">
+            <span class="stat-icon">◷</span>
+            <p>Pending balance</p>
+            <h2 id="totalPending">₹0</h2>
+            <small>Outstanding customer credit</small>
+          </article>
+          <article class="stat-card customers-stat">
+            <span class="stat-icon">♙</span>
+            <p>Total customers</p>
+            <h2 id="totalCustomers">0</h2>
+            <small>Customer records</small>
+          </article>
+        </div>
+
+        <div class="content-card">
+          <div class="section-heading">
+            <div>
+              <h2>Recent transactions</h2>
+              <p>Your latest recorded entries.</p>
+            </div>
+            <button class="text-btn" data-goto="transactions">View all →</button>
+          </div>
+          <div id="recentTransactions"></div>
+        </div>
+      </section>
+
+      <section id="customers" class="page-section hidden">
+        <div class="content-card">
+          <div class="section-heading">
+            <div>
+              <h2>Your customers</h2>
+              <p>Keep every customer and balance in one place.</p>
+            </div>
+            <button class="primary-btn" id="customersAddBtn">+ Add customer</button>
+          </div>
+          <input id="customerSearch" class="search-input" placeholder="Search by customer name or phone..." />
+          <div id="customerList"></div>
+        </div>
+      </section>
+
+      <section id="transactions" class="page-section hidden">
+        <div class="content-card">
+          <div class="section-heading">
+            <div>
+              <h2>Transaction history</h2>
+              <p>Review udhaar and received payments.</p>
+            </div>
+            <button class="primary-btn" id="addEntryBtn">+ Add entry</button>
+          </div>
+          <div id="allTransactions"></div>
+        </div>
+      </section>
+
+      <footer class="dashboard-footer">
+        <span>© 2026 HisabMate</span>
+        <span>Clear hisaab. Better everyday.</span>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Add Customer Dialog -->
+  <dialog id="customerDialog" class="app-dialog">
+    <form id="customerForm">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">CUSTOMER BOOK</p>
+          <h2>Add a customer</h2>
+        </div>
+        <button type="button" class="close-btn" data-close="customerDialog">×</button>
+      </div>
+      <label for="customerName">Customer name</label>
+      <input id="customerName" required maxlength="80" placeholder="e.g. Rahul Sharma">
+      <label for="customerPhone">Phone number</label>
+      <input id="customerPhone" type="tel" maxlength="15" placeholder="Optional">
+      <p id="customerError" class="form-error"></p>
+      <div class="dialog-actions">
+        <button type="button" class="secondary-btn" data-close="customerDialog">Cancel</button>
+        <button type="submit" class="primary-btn">Save customer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Add Transaction Dialog -->
+  <dialog id="entryDialog" class="app-dialog">
+    <form id="entryForm">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">KHATA ENTRY</p>
+          <h2>Record a transaction</h2>
+        </div>
+        <button type="button" class="close-btn" data-close="entryDialog">×</button>
+      </div>
+      <label for="entryCustomer">Select customer</label>
+      <select id="entryCustomer" required></select>
+      <label for="entryType">Entry type</label>
+      <select id="entryType" required>
+        <option value="credit">Udhaar given (customer owes you)</option>
+        <option value="payment">Payment received</option>
+      </select>
+      <label for="entryAmount">Amount (₹)</label>
+      <input id="entryAmount" type="number" min="0.01" max="1000000000" step="0.01" required placeholder="Enter amount">
+      <label for="entryNote">Note (optional)</label>
+      <input id="entryNote" maxlength="160" placeholder="e.g. Grocery items">
+      <p id="entryError" class="form-error"></p>
+      <div class="dialog-actions">
+        <button type="button" class="secondary-btn" data-close="entryDialog">Cancel</button>
+        <button type="submit" class="primary-btn">Save entry</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
